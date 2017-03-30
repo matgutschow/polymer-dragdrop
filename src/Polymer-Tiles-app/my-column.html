@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="my-column">
+    <template>
+        <style>
+             :host {
+                display: block;
+                margin: 10px;
+            }
+            
+            .wrapper {
+                display: block;
+                border-top: 1px solid #DADADA;
+                background-color: white;
+                box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+            
+            .contentBackground {
+                background-color: var(--my-column-background, lightblue);
+                /*set the default value to blue */
+                min-height: 150px;
+                padding: 5px;
+            }
+        </style>
+        <div class="wrapper">
+            <div class="contentBackground">
+                <content>
+                    <!-- content tiles will go here -->
+                </content>
+            </div>
+        </div>
+    </template>
+    <script>
+    Polymer({
+
+      is: 'my-column',
+
+      properties: {
+      },
+
+    });
+  </script>
+</dom-module>

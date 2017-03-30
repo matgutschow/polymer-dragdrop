@@ -1,0 +1,51 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- third party -->
+<link rel="import" href="../../bower_components/sortable/sortable.html">
+<dom-module id="my-task">
+    <template>
+        <style>
+             :host {
+                display: block;
+                margin: 10px;
+            }
+            
+            .wrapper {
+                border: 2px solid lightblue;
+                background-color: lightcyan;
+            }
+            
+            .wrapper[data-color="red"] {
+                background-color: lightcoral;
+            }
+            
+            .wrapper[data-color="blue"] {
+                background-color: lightblue;
+            }
+            
+            .wrapper[data-color="yellow"] {
+                background-color: lightyellow;
+            }
+            
+            h4 {
+                text-align: center
+            }
+        </style>
+        <sortable-js group="my-task-group">
+            <div class="wrapper" data-color$="{{color}}">
+                <h4>{{name}}</h4>
+            </div>
+        </sortable-js>
+    </template>
+    <script>
+    Polymer({
+
+      is: 'my-task',
+
+      properties: {
+          name: String,
+          color: String
+      },
+
+    });
+  </script>
+</dom-module>

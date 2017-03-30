@@ -1,0 +1,120 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<!-- My custom elements-->
+<link rel="import" href="./my-column.html">
+<link rel="import" href="./my-task.html">
+<dom-module id="Polymer-Tiles-app">
+  <template>
+    <style>
+       :host {
+        display: block;
+        --my-column-background: lightgray;
+        /* override the default color defined on the element */
+      }
+      
+      .flex-horizontal {
+        @apply(--layout-horizontal);
+      }
+      
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      
+      paper-checkbox[data-notebook-color="red"] {
+        --primary-color: red;
+      }
+      
+      paper-checkbox[data-notebook-color="blue"] {
+        --primary-color: blue;
+      }
+      
+      paper-checkbox[data-notebook-color="yellow"] {
+        --primary-color: yellow;
+      }
+    </style>
+    <h2>Layout</h2>
+    <div>
+      <!-- checkbox options-->
+      <template is="dom-repeat" items="{{notebookcolors}}">
+        <paper-checkbox data-notebook-color$={{item.color}} checked="{{item.toggle}}" on-change="_updateColor">{{item.color}} </paper-checkbox>
+      </template>
+      <pap </div>
+        <div class="container flex-horizontal">
+          <my-column class="flexchild">
+            <!-- this has to be here otherwise the drop group doesn't get init right... might just be something in the api to look at or layout app differently-->
+            <my-task></my-task>
+          </my-column>
+          <my-column class="flexchild">
+            <template is="dom-repeat" items="{{filteredTasks}}">
+              <my-task name="{{item.name}}" color="{{item.color}}"></my-task>
+            </template>
+          </my-column>
+          <my-column class="flexchild">
+            <!-- this has to be here otherwise the drop group doesn't get init right... might just be something in the api to look at or layout app differently-->
+            <my-task></my-task>
+          </my-column>
+        </div>
+  </template>
+  <script>
+    Polymer({
+
+      is: 'Polymer-Tiles-app',
+
+      properties: {
+        tasks: Array,
+        filteredTasks: Array,
+        notebookcolors: Array
+      },
+      attached: function(){
+        this.tasks = [
+          {
+            "color": "red",
+            "name" : "task 1"
+          },
+          {
+            "color": "blue",
+            "name" : "task 2"
+          },
+          {
+            "color": "yellow",
+            "name" : "task 3"
+          }
+        ];
+        this.notebookcolors = [{
+          "color":"red",
+          "toggle": true
+        },{
+          "color":"blue",
+          "toggle": true
+        },{
+          "color":"yellow",
+          "toggle": true
+        }];
+        this._applyColoring();
+      },
+      //private api
+      _updateColor: function(args){
+       
+        //fetch notebook color
+        var color = args.currentTarget.dataset.notebookColor;
+
+        //do something with the tasks
+        this._applyColoring();
+
+      },
+      _applyColoring: function(){
+        this.filteredTasks = _.filter(this.tasks, (t) => {
+          //match the color
+          var matchingColor= _.find(this.notebookcolors, (i)=> {
+            return i.color === t.color;
+          });
+
+          return matchingColor.toggle;
+        });
+
+        console.log(this.filteredTasks);
+      }
+    });
+  </script>
+</dom-module>
